@@ -1,11 +1,11 @@
-import socket
 import threading
 import random
 import time
 import pickle
+import socket
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(("172.30.100.205", 5018))
+server_socket.bind(("172.30.100.205", 5050))
 server_socket.listen(5)
 
 
@@ -54,7 +54,7 @@ class Game:
                 'message': 'Ai picat pradă monstrului din labirint 🙁… ai pierdut jocul. Încerca din nou!'
             }
             object_copy = pickle.dumps(game_state)
-            client_socket.send(object_copy)
+            self.client_socket.send(object_copy)
         return check
 
     def exit(self):
@@ -66,7 +66,7 @@ class Game:
                 'message': 'Ai iesit !'
             }
             object_copy = pickle.dumps(game_state)
-            client_socket.send(object_copy)
+            self.client_socket.send(object_copy)
         return check
 
     def check_obstacle(self, x, y):
@@ -87,7 +87,7 @@ class Game:
                 'matrix': self.matrix,
             }
             object_copy = pickle.dumps(game_state)
-            client_socket.send(object_copy)
+            self.client_socket.send(object_copy)
             if (self.caught()):
                 break
             if self.exit():
@@ -125,6 +125,10 @@ class Game:
             elif key_pressed == 's':
                 if self.check_obstacle(self.playerX + 1, self.playerY):
                     self.playerX += 1
+            if (self.caught()):
+                break
+            if self.exit():
+                break
 
     def start_monster_movement_thread(self):
         monster_movement_thread = threading.Thread(

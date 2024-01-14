@@ -2,9 +2,9 @@ import socket
 import threading
 import os
 import pickle
-import time
+
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(("172.30.100.205", 5018))
+client_socket.connect(("172.30.100.205", 5050))
 
 stop = False
 
